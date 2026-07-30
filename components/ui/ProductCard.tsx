@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Star, Clock } from "lucide-react";
+import { Plus, Star, Clock, Heart } from "lucide-react";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoritesContext";
 import { formatPrice } from "@/lib/utils";
 import CoffeeCupSVG from "./CoffeeCupSVG";
 
@@ -16,6 +17,7 @@ interface Props {
 
 export default function ProductCard({ product, index = 0, onViewDetail }: Props) {
   const { addItem, openCart } = useCart();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [added, setAdded] = useState(false);
 
   const handleAdd = (e: React.MouseEvent) => {
@@ -88,9 +90,25 @@ export default function ProductCard({ product, index = 0, onViewDetail }: Props)
         )}
 
         {/* Rating pill */}
-        <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/30 backdrop-blur-sm rounded-full px-2 py-1">
-          <Star size={10} className="fill-yellow-400 text-yellow-400" />
-          <span className="text-white text-[10px] font-bold">{product.rating}</span>
+        <div className="absolute top-3 right-3 flex items-center gap-1.5">
+          <motion.button
+            whileTap={{ scale: 0.8 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(product.id);
+            }}
+            aria-label={isFavorite(product.id) ? "Remove from favorites" : "Add to favorites"}
+            className="w-6 h-6 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center"
+          >
+            <Heart
+              size={11}
+              className={isFavorite(product.id) ? "fill-red-400 text-red-400" : "text-white/80"}
+            />
+          </motion.button>
+          <div className="flex items-center gap-1 bg-black/30 backdrop-blur-sm rounded-full px-2 py-1">
+            <Star size={10} className="fill-yellow-400 text-yellow-400" />
+            <span className="text-white text-[10px] font-bold">{product.rating}</span>
+          </div>
         </div>
       </div>
 

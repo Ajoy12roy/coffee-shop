@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PRODUCTS, CATEGORIES } from "@/lib/data";
 import { Product } from "@/types";
 import ProductCard from "@/components/ui/ProductCard";
-import ProductModal from "@/components/ui/ProductModal";
+import CoffeeDetailSheet from "@/components/ui/CoffeeDetailSheet";
 
 export default function MenuSection() {
   const [activeCategory, setActiveCategory] = useState("drinks");
@@ -85,8 +85,8 @@ export default function MenuSection() {
         </AnimatePresence>
       </div>
 
-      {/* Product Modal */}
-      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+      {/* Detail sheet */}
+      <CoffeeDetailSheet product={selectedProduct} onClose={() => setSelectedProduct(null)} />
     </section>
   );
 }

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { HERO_STATS, PRODUCTS } from "@/lib/data";
 import { useCart } from "@/context/CartContext";
-import CoffeeCupSVG from "@/components/ui/CoffeeCupSVG";
+import CoffeePourAnimation from "@/components/ui/CoffeePourAnimation";
 import gsap from "gsap";
 
 const floatingItems = [
@@ -73,9 +73,9 @@ export default function HeroSection() {
       ))}
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[1.08fr_0.92fr] gap-12 items-center">
         {/* Text */}
-        <div>
+        <div className="lg:-translate-x-3 xl:-translate-x-6">
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2 }}
             className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
             style={{ background:"rgba(255,107,44,0.1)", border:"1px solid rgba(255,107,44,0.2)" }}>
@@ -145,7 +145,7 @@ export default function HeroSection() {
             className="absolute w-56 h-56 rounded-full border border-dashed border-[#FF6B2C]/10" />
 
           <div ref={cupRef} className="relative z-10">
-            <CoffeeCupSVG size={240} color="#FF6B2C" />
+            <CoffeePourAnimation size={260} />
 
             <motion.div animate={{ y:[0,-8,0] }} transition={{ duration:2, repeat:Infinity, ease:"easeInOut", delay:1 }}
               className="absolute -top-4 -right-6 rounded-2xl px-3 py-2 text-center"

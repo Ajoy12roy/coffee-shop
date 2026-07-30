@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/ui/CartDrawer";
@@ -16,10 +17,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="noise">
         <CartProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <CartDrawer />
+          <FavoritesProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <CartDrawer />
+          </FavoritesProvider>
         </CartProvider>
       </body>
     </html>

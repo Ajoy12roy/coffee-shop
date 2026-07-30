@@ -7,6 +7,7 @@ import { PRODUCTS } from "@/lib/data";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
 import CoffeeCupSVG from "@/components/ui/CoffeeCupSVG";
+import SpecialCard from "@/components/ui/SpecialCard";
 import gsap from "gsap";
 
 const FEATURED = PRODUCTS.filter((p) => p.isPopular);
@@ -148,6 +149,30 @@ export default function FeaturedSection() {
             </AnimatePresence>
           </div>
         </div>
+
+        {/* Expanded lineup — premium hover cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4"
+        >
+          {FEATURED.map((item, i) => (
+            <SpecialCard
+              key={item.id}
+              product={item}
+              index={i}
+              onSelect={(p) => {
+                const idx = FEATURED.findIndex((f) => f.id === p.id);
+                if (idx >= 0) {
+                  setDirection(idx > active ? 1 : -1);
+                  setActive(idx);
+                }
+              }}
+            />
+          ))}
+        </motion.div>
       </div>
     </section>
   );

@@ -82,14 +82,16 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255,107,44,0.5)" }}
-              whileTap={{ scale: 0.95 }}
-              className="hidden md:flex items-center gap-2 text-white px-5 py-2 rounded-full text-sm font-semibold transition-colors shadow-lg"
-              style={{ background: "linear-gradient(135deg,#FF6B2C,#FF8C55)" }}
-            >
-              Order Now
-            </motion.button>
+            <Link href="/profile">
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255,107,44,0.5)" }}
+                whileTap={{ scale: 0.95 }}
+                className="hidden md:flex items-center gap-2 text-white px-5 py-2 rounded-full text-sm font-semibold transition-colors shadow-lg"
+                style={{ background: "linear-gradient(135deg,#FF6B2C,#FF8C55)" }}
+              >
+                Order Now
+              </motion.button>
+            </Link>
             <motion.button
               whileTap={{ scale: 0.9 }}
               className="md:hidden w-9 h-9 rounded-full glass flex items-center justify-center text-white"
@@ -117,10 +119,12 @@ export default function Navbar() {
                 </li>
               ))}
               <li>
-                <button className="w-full text-white py-3 rounded-full font-semibold mt-2"
-                  style={{ background: "linear-gradient(135deg,#FF6B2C,#FF8C55)" }}>
-                  Order Now
-                </button>
+                <Link href="/profile" onClick={() => setIsMobileOpen(false)}>
+                  <button className="w-full text-white py-3 rounded-full font-semibold mt-2"
+                    style={{ background: "linear-gradient(135deg,#FF6B2C,#FF8C55)" }}>
+                    Order Now
+                  </button>
+                </Link>
               </li>
             </ul>
           </motion.div>
