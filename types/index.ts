@@ -10,6 +10,9 @@ export interface Product {
   rating: number;
   isPopular?: boolean;
   prepTime?: string;
+  roastType?: string;
+  roastLevel?: string;
+  flavorNotes?: string[];
 }
 
 export interface Category {

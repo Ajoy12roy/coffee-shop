@@ -26,6 +26,9 @@ export const PRODUCTS: Product[] = [
     rating: 4.8,
     isPopular: true,
     prepTime: "2 min",
+    roastType: "Espresso-Based",
+    roastLevel: "Dark Roast",
+    flavorNotes: ["Bold", "Nutty", "Caramel"],
   },
   {
     id: "2",
@@ -39,6 +42,9 @@ export const PRODUCTS: Product[] = [
     rating: 4.7,
     isPopular: true,
     prepTime: "4 min",
+    roastType: "Milk Coffee",
+    roastLevel: "Medium Roast",
+    flavorNotes: ["Creamy", "Sweet", "Smooth"],
   },
   {
     id: "3",
@@ -52,6 +58,9 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     isPopular: true,
     prepTime: "3 min",
+    roastType: "Milk Coffee",
+    roastLevel: "Medium Roast",
+    flavorNotes: ["Velvety", "Balanced", "Light"],
   },
   {
     id: "4",
@@ -65,6 +74,9 @@ export const PRODUCTS: Product[] = [
     rating: 4.6,
     isPopular: true,
     prepTime: "4 min",
+    roastType: "Milk Coffee",
+    roastLevel: "Medium-Dark Roast",
+    flavorNotes: ["Foamy", "Rich", "Classic"],
   },
   {
     id: "9",
@@ -78,6 +90,9 @@ export const PRODUCTS: Product[] = [
     rating: 4.6,
     isPopular: true,
     prepTime: "3 min",
+    roastType: "Espresso-Based",
+    roastLevel: "Dark Roast",
+    flavorNotes: ["Bright", "Bold", "Clean"],
   },
   {
     id: "10",
@@ -91,6 +106,9 @@ export const PRODUCTS: Product[] = [
     rating: 4.8,
     isPopular: true,
     prepTime: "5 min",
+    roastType: "Milk Coffee",
+    roastLevel: "Medium-Dark Roast",
+    flavorNotes: ["Chocolatey", "Rich", "Indulgent"],
   },
   {
     id: "11",
@@ -104,6 +122,9 @@ export const PRODUCTS: Product[] = [
     rating: 4.7,
     isPopular: true,
     prepTime: "3 min",
+    roastType: "Espresso-Based",
+    roastLevel: "Dark Roast",
+    flavorNotes: ["Sweet", "Intense", "Layered"],
   },
   {
     id: "5",

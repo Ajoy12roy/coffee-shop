@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { HERO_STATS, PRODUCTS } from "@/lib/data";
 import { useCart } from "@/context/CartContext";
-import CoffeePourAnimation from "@/components/ui/CoffeePourAnimation";
+import HeroCupDuo from "@/components/ui/HeroCupDuo";
 import gsap from "gsap";
 
 const floatingItems = [
@@ -23,9 +23,6 @@ export default function HeroSection() {
   const featuredProduct = PRODUCTS[0];
 
   useEffect(() => {
-    if (cupRef.current) {
-      gsap.to(cupRef.current, { y: -22, duration: 2.6, repeat: -1, yoyo: true, ease: "sine.inOut" });
-    }
     if (bgRef.current) {
       gsap.to(bgRef.current, { scale: 1.06, duration: 9, repeat: -1, yoyo: true, ease: "sine.inOut" });
     }
@@ -73,14 +70,14 @@ export default function HeroSection() {
       ))}
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[1.08fr_0.92fr] gap-12 items-center">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[1.18fr_0.82fr] gap-10 items-center">
         {/* Text */}
-        <div className="lg:-translate-x-3 xl:-translate-x-6">
+        <div className="lg:-translate-x-6 xl:-translate-x-10">
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2 }}
             className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
             style={{ background:"rgba(255,107,44,0.1)", border:"1px solid rgba(255,107,44,0.2)" }}>
             <Star size={14} style={{ color:"#FF6B2C", fill:"#FF6B2C" }} />
-            <span className="text-sm font-medium" style={{ color:"#FF6B2C" }}>#1 Coffee App in Bangladesh</span>
+            <span className="text-sm font-medium" style={{ color:"#FF6B2C" }}>Artisan Coffee Experience</span>
           </motion.div>
 
           <motion.h1 initial={{ opacity:0, y:30 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3, duration:0.7 }}
@@ -145,17 +142,17 @@ export default function HeroSection() {
             className="absolute w-56 h-56 rounded-full border border-dashed border-[#FF6B2C]/10" />
 
           <div ref={cupRef} className="relative z-10">
-            <CoffeePourAnimation size={260} />
+            <HeroCupDuo size={190} />
 
             <motion.div animate={{ y:[0,-8,0] }} transition={{ duration:2, repeat:Infinity, ease:"easeInOut", delay:1 }}
-              className="absolute -top-4 -right-6 rounded-2xl px-3 py-2 text-center"
+              className="absolute -top-2 -right-8 sm:-right-12 rounded-2xl px-3 py-2 text-center z-30"
               style={{ background:"rgba(255,107,44,0.12)", border:"1px solid rgba(255,107,44,0.25)", backdropFilter:"blur(8px)" }}>
               <div className="font-bold text-sm" style={{ color:"#FF6B2C" }}>4.9 ★</div>
               <div className="text-white/60 text-xs">Rating</div>
             </motion.div>
 
             <motion.div animate={{ y:[0,8,0] }} transition={{ duration:2.5, repeat:Infinity, ease:"easeInOut", delay:0.5 }}
-              className="absolute -bottom-2 -left-6 rounded-2xl px-3 py-2 glass">
+              className="absolute -bottom-4 -left-8 sm:-left-12 rounded-2xl px-3 py-2 glass z-30">
               <div className="text-white font-semibold text-sm">🔥 Hot Deal</div>
               <div className="text-sm" style={{ color:"#FF6B2C" }}>20% OFF today</div>
             </motion.div>
