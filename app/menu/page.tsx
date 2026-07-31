@@ -20,7 +20,7 @@ export default function MenuPage() {
   return (
     <div className="min-h-screen">
       {/* Full-screen 3D coffee showcase */}
-      <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-4">
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 pt-28 pb-12">
         <div
           className="absolute inset-0 -z-10"
           style={{ background: "radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255,107,44,0.12) 0%, transparent 70%)" }}
@@ -35,7 +35,7 @@ export default function MenuPage() {
           <h1 className="text-white font-bold text-4xl mt-1">Pick Your Cup</h1>
         </motion.div>
 
-        <PremiumMenuCarousel3D products={DRINKS} onSelect={setSelected} interval={4000} />
+        <PremiumMenuCarousel3D products={DRINKS} onSelect={setSelected} interval={3000} />
 
         <motion.div
           initial={{ opacity: 0 }}

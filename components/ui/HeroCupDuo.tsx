@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import PremiumCupSVG from "./PremiumCupSVG";
 
 interface Props {
   size?: number;
@@ -68,7 +67,12 @@ export default function HeroCupDuo({ size = 190 }: Props) {
         style={{ top: "6%", right: "6%" }}
       >
         <div className="relative">
-          <PremiumCupSVG size={size * 0.82} variant="dark" accent="#FF6B2C" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/coffee/cup.png"
+            alt=""
+            style={{ width: size * 0.78, height: "auto", transform: "scaleX(-1)", filter: "drop-shadow(0 18px 22px rgba(0,0,0,0.45))" }}
+          />
           <Steam delay={0.6} left="46%" />
           <motion.div
             animate={{ x: [-40, 40, -40], opacity: [0, 0.5, 0] }}
@@ -86,7 +90,12 @@ export default function HeroCupDuo({ size = 190 }: Props) {
         style={{ bottom: "4%", left: "2%" }}
       >
         <div className="relative">
-          <PremiumCupSVG size={size} variant="light" accent="#FF6B2C" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/coffee/cup.png"
+            alt="Signature coffee cup"
+            style={{ width: size, height: "auto", filter: "drop-shadow(0 22px 26px rgba(0,0,0,0.5))" }}
+          />
           <Steam delay={0} left="46%" />
           <motion.div
             animate={{ x: [-40, 40, -40], opacity: [0, 0.4, 0] }}

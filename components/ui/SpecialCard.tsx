@@ -6,7 +6,7 @@ import { Plus, Star, ShoppingBag } from "lucide-react";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
-import NamedCoffeeCupSVG from "./NamedCoffeeCupSVG";
+import CurvedLabel from "./CurvedLabel";
 
 interface Props {
   product: Product;
@@ -85,7 +85,7 @@ export default function SpecialCard({ product, index = 0, onSelect }: Props) {
           {/* Pointer-follow spotlight */}
           <motion.div
             animate={{ opacity: hovered ? 0.5 : 0 }}
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none z-[5]"
             style={{
               background: `radial-gradient(circle at ${spotX} ${spotY}, rgba(255,255,255,0.5) 0%, transparent 55%)`,
             }}
@@ -95,19 +95,34 @@ export default function SpecialCard({ product, index = 0, onSelect }: Props) {
             <span className="text-white text-[10px] font-bold">{product.rating}</span>
           </div>
 
-          <motion.div
-            animate={{ y: hovered ? -8 : 0, scale: hovered ? 1.08 : 1 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            style={{ filter: "drop-shadow(0 10px 14px rgba(0,0,0,0.35))" }}
-          >
-            {product.category === "drinks" ? (
-              <NamedCoffeeCupSVG productId={product.id} name={product.name} color={product.color} size={76} />
-            ) : (
+          {product.category === "drinks" ? (
+            <motion.div
+              animate={{ scale: hovered ? 1.08 : 1 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="absolute inset-0"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/coffee/cup2.png"
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.55) 100%)" }} />
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2">
+                <CurvedLabel id={product.id} text={product.name} width={130} />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              animate={{ y: hovered ? -8 : 0, scale: hovered ? 1.08 : 1 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              style={{ filter: "drop-shadow(0 10px 14px rgba(0,0,0,0.35))" }}
+            >
               <span className="text-6xl leading-none block">
                 {product.category === "donuts" ? "🍩" : "🥐"}
               </span>
-            )}
-          </motion.div>
+            </motion.div>
+          )}
         </div>
 
         {/* Info */}

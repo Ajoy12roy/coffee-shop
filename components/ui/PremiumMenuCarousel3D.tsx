@@ -13,7 +13,7 @@ interface Props {
   interval?: number;
 }
 
-export default function PremiumMenuCarousel3D({ products, onSelect, interval = 4000 }: Props) {
+export default function PremiumMenuCarousel3D({ products, onSelect, interval = 3000 }: Props) {
   const [active, setActive] = useState(0);
   const n = products.length;
 
@@ -43,7 +43,7 @@ export default function PremiumMenuCarousel3D({ products, onSelect, interval = 4
       {/* 3D stage — cups dominate the hero area */}
       <div
         className="relative w-full flex items-center justify-center"
-        style={{ height: 440, perspective: 1200 }}
+        style={{ height: 500, perspective: 1300 }}
       >
         {/* Glass nav arrows */}
         <motion.button
@@ -76,8 +76,8 @@ export default function PremiumMenuCarousel3D({ products, onSelect, interval = 4
             offset === 0
               ? { x: 0, scale: 1, opacity: 1, rotateY: 0, zIndex: 5, filter: "brightness(1)" }
               : Math.abs(offset) === 1
-              ? { x: offset * 280, scale: 0.62, opacity: 0.4, rotateY: offset * -34, zIndex: 3, filter: "brightness(0.55) blur(0.5px)" }
-              : { x: offset * 420, scale: 0.4, opacity: 0, rotateY: offset * -42, zIndex: 1, filter: "brightness(0.35)" };
+              ? { x: offset * 330, scale: 0.6, opacity: 0.4, rotateY: offset * -34, zIndex: 3, filter: "brightness(0.55) blur(0.5px)" }
+              : { x: offset * 480, scale: 0.38, opacity: 0, rotateY: offset * -42, zIndex: 1, filter: "brightness(0.35)" };
 
           return (
             <motion.button
@@ -107,7 +107,7 @@ export default function PremiumMenuCarousel3D({ products, onSelect, interval = 4
                 animate={isCenter ? { y: [0, -12, 0] } : {}}
                 transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
               >
-                <NamedCoffeeCupSVG productId={p.id} name={p.name} color={p.color} size={isCenter ? 280 : 190} />
+                <NamedCoffeeCupSVG productId={p.id} name={p.name} color={p.color} size={isCenter ? 340 : 220} />
               </motion.div>
             </motion.button>
           );
