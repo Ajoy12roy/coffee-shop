@@ -7,7 +7,7 @@ import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoritesContext";
 import { formatPrice } from "@/lib/utils";
-import CoffeeCupSVG from "./CoffeeCupSVG";
+import CurvedLabel from "./CurvedLabel";
 
 interface Props {
   product: Product;
@@ -83,9 +83,13 @@ export default function ProductCard({ product, index = 0, onViewDetail }: Props)
           <motion.div
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            className="relative z-10"
+            className="relative z-10 flex flex-col items-center justify-center h-full w-full"
           >
-            <CoffeeCupSVG size={90} color="rgba(255,255,255,0.9)" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/coffee/generated-carousel.png" alt={product.name} className="h-[75%] w-auto object-contain" style={{ filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.4))" }} />
+            <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+               <CurvedLabel id={`pc-${product.id}`} text={product.name} width={75} />
+            </div>
           </motion.div>
         )}
 

@@ -8,33 +8,36 @@ interface Props {
   size?: number;
 }
 
-export default function HeroCupDuo({ size = 190 }: Props) {
-  const frontRef = useRef<HTMLDivElement>(null);
-  const backRef = useRef<HTMLDivElement>(null);
+/**
+ * Hero visual — two identical premium cups (from the uploaded cup photo),
+ * placed side-by-side at a slight angle, each floating independently.
+ */
+export default function HeroCupDuo({ size = 220 }: Props) {
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Slow independent float + rotation — opposite phase so the cross composition breathes
-      if (frontRef.current) {
-        gsap.to(frontRef.current, {
-          y: -14,
-          rotate: 3,
+      if (leftRef.current) {
+        gsap.to(leftRef.current, {
+          y: -12,
+          rotate: -5,
           duration: 3.2,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
         });
       }
-      if (backRef.current) {
-        gsap.to(backRef.current, {
-          y: 12,
-          rotate: -4,
-          duration: 3.8,
+      if (rightRef.current) {
+        gsap.to(rightRef.current, {
+          y: -16,
+          rotate: 9,
+          duration: 3.6,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
-          delay: 0.4,
+          delay: 0.5,
         });
       }
       if (glowRef.current) {
@@ -52,55 +55,51 @@ export default function HeroCupDuo({ size = 190 }: Props) {
   }, []);
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: size * 1.7, height: size * 1.75 }}>
+    <div className="relative flex items-end justify-center" style={{ width: size * 1.7, height: size * 1.35 }}>
       {/* Ambient glow */}
       <div
         ref={glowRef}
-        className="absolute w-72 h-72 rounded-full pointer-events-none"
+        className="absolute w-80 h-80 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle,rgba(255,107,44,0.32) 0%,transparent 70%)", filter: "blur(36px)" }}
       />
 
-      {/* Back cup (black) — upper-right to lower-left axis */}
+      {/* Left cup — slight angle, sits behind */}
       <div
-        ref={backRef}
+        ref={leftRef}
         className="absolute z-10"
-        style={{ top: "6%", right: "6%" }}
+        style={{ left: "4%", bottom: "2%", transform: "rotate(-6deg)" }}
       >
         <div className="relative">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/coffee/cup.png"
+            src="/images/coffee/cappuccino.png"
             alt=""
-            style={{ width: size * 0.78, height: "auto", transform: "scaleX(-1)", filter: "drop-shadow(0 18px 22px rgba(0,0,0,0.45))" }}
+            style={{ width: size * 0.86, height: "auto", filter: "drop-shadow(0 20px 24px rgba(0,0,0,0.5)) brightness(0.85)" }}
           />
-          <Steam delay={0.6} left="46%" />
-          <motion.div
-            animate={{ x: [-40, 40, -40], opacity: [0, 0.5, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-[18%] left-0 w-6 h-2/3 pointer-events-none"
-            style={{ background: "linear-gradient(115deg, transparent, rgba(255,255,255,0.35), transparent)", filter: "blur(4px)" }}
-          />
+          <Steam left="46%" delay={0.5} />
         </div>
       </div>
 
-      {/* Front cup (white) — lower-left to upper-right axis, overlapping the black cup to form the X */}
+      {/* Right cup — mirrored angle, in front */}
       <div
-        ref={frontRef}
+        ref={rightRef}
         className="absolute z-20"
-        style={{ bottom: "4%", left: "2%" }}
+        style={{ right: "6%", bottom: "0%", transform: "rotate(5deg)" }}
       >
         <div className="relative">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/coffee/cup.png"
+            src="/images/coffee/cappuccino.png"
             alt="Signature coffee cup"
-            style={{ width: size, height: "auto", filter: "drop-shadow(0 22px 26px rgba(0,0,0,0.5))" }}
+            style={{ width: size, height: "auto", filter: "drop-shadow(0 24px 28px rgba(0,0,0,0.55))" }}
           />
-          <Steam delay={0} left="46%" />
+          <Steam left="46%" delay={0} />
+
+          {/* Shine sweep */}
           <motion.div
             animate={{ x: [-40, 40, -40], opacity: [0, 0.4, 0] }}
-            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-            className="absolute top-[18%] left-0 w-6 h-2/3 pointer-events-none"
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[15%] left-0 w-8 h-2/3 pointer-events-none"
             style={{ background: "linear-gradient(115deg, transparent, rgba(255,255,255,0.5), transparent)", filter: "blur(4px)" }}
           />
         </div>

@@ -74,7 +74,7 @@ export default function SpecialCard({ product, index = 0, onSelect }: Props) {
           background: "rgba(255,255,255,0.06)",
           border: "1px solid rgba(255,255,255,0.1)",
           backdropFilter: "blur(10px)",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+          boxShadow: "0 12px 32px rgba(0,0,0,0.32)",
         }}
       >
         {/* Visual */}
@@ -96,22 +96,22 @@ export default function SpecialCard({ product, index = 0, onSelect }: Props) {
           </div>
 
           {product.category === "drinks" ? (
-            <motion.div
-              animate={{ scale: hovered ? 1.08 : 1 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="absolute inset-0"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/coffee/cup2.png"
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.55) 100%)" }} />
-              <div className="absolute bottom-1 left-1/2 -translate-x-1/2">
-                <CurvedLabel id={product.id} text={product.name} width={130} />
-              </div>
-            </motion.div>
+              <motion.div
+                animate={{ y: hovered ? -8 : 0, scale: hovered ? 1.08 : 1 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="relative flex flex-col items-center justify-center w-full h-full"
+                style={{ filter: "drop-shadow(0 10px 14px rgba(0,0,0,0.35))" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/coffee/generated-carousel.png"
+                  alt={product.name}
+                  className="h-[85%] w-auto object-contain pointer-events-none"
+                />
+                <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+                  <CurvedLabel id={product.id} text={product.name} width={80} />
+                </div>
+              </motion.div>
           ) : (
             <motion.div
               animate={{ y: hovered ? -8 : 0, scale: hovered ? 1.08 : 1 }}

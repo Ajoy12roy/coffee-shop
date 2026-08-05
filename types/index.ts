@@ -13,6 +13,8 @@ export interface Product {
   roastType?: string;
   roastLevel?: string;
   flavorNotes?: string[];
+  milkLevel?: string;
+  sweetness?: string;
 }
 
 export interface Category {

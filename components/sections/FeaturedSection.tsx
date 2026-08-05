@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PRODUCTS } from "@/lib/data";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
-import CoffeeCupSVG from "@/components/ui/CoffeeCupSVG";
+import CurvedLabel from "@/components/ui/CurvedLabel";
 import SpecialCard from "@/components/ui/SpecialCard";
 import gsap from "gsap";
 
@@ -142,8 +142,35 @@ export default function FeaturedSection() {
                 <motion.div
                   animate={{ y: [0, -16, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative flex flex-col items-center justify-center w-full h-full"
                 >
-                  <CoffeeCupSVG size={220} color="rgba(255,255,255,0.95)" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/coffee/generated-carousel.png" alt={product.name} className="w-[220px] h-auto object-contain pointer-events-none" style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.6))" }} />
+                  <div className="absolute bottom-[23%] left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+                    <CurvedLabel id={`featured-${product.id}`} text={product.name} width={130} />
+                  </div>
+                  {/* Rising steam */}
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 pointer-events-none">
+                    {[-32, -22, -11, 0, 11, 22, 32].map((offset, i) => (
+                      <motion.span
+                        key={i}
+                        className="absolute block w-[3px] rounded-full bg-white/50"
+                        style={{ left: offset, bottom: 0, height: 22 }}
+                        animate={{
+                          y: [0, -70 - (i % 3) * 8],
+                          x: [0, i % 2 === 0 ? 14 : -14, 0],
+                          opacity: [0, 0.55, 0],
+                          scaleX: [1, 1.9],
+                        }}
+                        transition={{
+                          duration: 3.2 + i * 0.35,
+                          repeat: Infinity,
+                          delay: i * 0.45,
+                          ease: "easeOut",
+                        }}
+                      />
+                    ))}
+                  </div>
                 </motion.div>
               </motion.div>
             </AnimatePresence>

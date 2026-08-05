@@ -70,18 +70,18 @@ export default function HeroSection() {
       ))}
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[1.18fr_0.82fr] gap-10 items-center">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[1.18fr_0.82fr] gap-10 lg:gap-20 xl:gap-28 items-center">
         {/* Text */}
-        <div className="lg:-translate-x-6 xl:-translate-x-10">
+        <div className="lg:-translate-x-10 xl:-translate-x-16">
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2 }}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-7"
             style={{ background:"rgba(255,107,44,0.1)", border:"1px solid rgba(255,107,44,0.2)" }}>
             <Star size={14} style={{ color:"#FF6B2C", fill:"#FF6B2C" }} />
-            <span className="text-sm font-medium" style={{ color:"#FF6B2C" }}>Artisan Coffee Experience</span>
+            <span className="text-sm font-semibold tracking-wide" style={{ color:"#FF6B2C" }}>Artisan Coffee Experience</span>
           </motion.div>
 
           <motion.h1 initial={{ opacity:0, y:30 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3, duration:0.7 }}
-            className="font-bold text-5xl sm:text-6xl lg:text-7xl leading-tight mb-6 text-white">
+            className="font-extrabold text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-7 text-white">
             Best{" "}
             <span style={{ background:"linear-gradient(135deg,#FF6B2C,#FFD700)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
               Coffee
@@ -91,13 +91,13 @@ export default function HeroSection() {
           </motion.h1>
 
           <motion.p initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.5 }}
-            className="text-white/60 text-lg leading-relaxed mb-8 max-w-md">
+            className="text-white/60 text-lg leading-[1.7] font-light mb-9 max-w-md">
             Order premium espresso, lattes, and fresh donuts from the comfort of your home.
             Delivered hot and fresh in minutes.
           </motion.p>
 
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.6 }}
-            className="flex flex-wrap gap-4 mb-12">
+            className="flex flex-wrap gap-4 mb-14">
             <motion.button
               whileHover={{ scale:1.05, boxShadow:"0 0 30px rgba(255,107,44,0.5)" }}
               whileTap={{ scale:0.97 }}
@@ -132,7 +132,7 @@ export default function HeroSection() {
         </div>
 
         {/* Visual */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center lg:translate-x-6 xl:translate-x-12">
           <div className="absolute w-80 h-80 rounded-full"
             style={{ background:"radial-gradient(circle,rgba(255,107,44,0.28) 0%,transparent 70%)", filter:"blur(40px)" }}
           />
@@ -142,17 +142,17 @@ export default function HeroSection() {
             className="absolute w-56 h-56 rounded-full border border-dashed border-[#FF6B2C]/10" />
 
           <div ref={cupRef} className="relative z-10">
-            <HeroCupDuo size={190} />
+            <HeroCupDuo size={240} />
 
             <motion.div animate={{ y:[0,-8,0] }} transition={{ duration:2, repeat:Infinity, ease:"easeInOut", delay:1 }}
-              className="absolute -top-2 -right-8 sm:-right-12 rounded-2xl px-3 py-2 text-center z-30"
+              className="absolute top-4 right-0 sm:right-2 rounded-2xl px-3 py-2 text-center z-30"
               style={{ background:"rgba(255,107,44,0.12)", border:"1px solid rgba(255,107,44,0.25)", backdropFilter:"blur(8px)" }}>
               <div className="font-bold text-sm" style={{ color:"#FF6B2C" }}>4.9 ★</div>
               <div className="text-white/60 text-xs">Rating</div>
             </motion.div>
 
             <motion.div animate={{ y:[0,8,0] }} transition={{ duration:2.5, repeat:Infinity, ease:"easeInOut", delay:0.5 }}
-              className="absolute -bottom-4 -left-8 sm:-left-12 rounded-2xl px-3 py-2 glass z-30">
+              className="absolute bottom-8 left-0 sm:left-2 rounded-2xl px-3 py-2 glass z-30">
               <div className="text-white font-semibold text-sm">🔥 Hot Deal</div>
               <div className="text-sm" style={{ color:"#FF6B2C" }}>20% OFF today</div>
             </motion.div>

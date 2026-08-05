@@ -2,48 +2,58 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Flame, Droplet, Candy, Sparkles } from "lucide-react";
 import { Product } from "@/types";
-import { formatPrice } from "@/lib/utils";
-import NamedCoffeeCupSVG from "./NamedCoffeeCupSVG";
+import CurvedLabel from "./CurvedLabel";
 
 interface Props {
   products: Product[];
   onSelect: (product: Product) => void;
-  interval?: number;
+  cycleDuration?: number; // full enter -> hold -> exit cycle, ms
 }
 
-export default function PremiumMenuCarousel3D({ products, onSelect, interval = 3000 }: Props) {
+const CUP_IMAGE = "/images/coffee/carousel-cup.png";
+
+// Orbit info bubbles — angled around the cup, each a short info chip
+const ORBIT_SLOTS = [
+  { angle: -55, icon: Flame, key: "roastLevel" as const, fallback: "Signature Roast" },
+  { angle: 55, icon: Sparkles, key: "flavorNotes" as const, fallback: null },
+  { angle: -135, icon: Droplet, key: "milkLevel" as const, fallback: "No Milk" },
+  { angle: 135, icon: Candy, key: "sweetness" as const, fallback: "Balanced" },
+];
+
+export default function PremiumMenuCarousel3D({ products, onSelect, cycleDuration = 3800 }: Props) {
   const [active, setActive] = useState(0);
+  const [orbitOpen, setOrbitOpen] = useState(false);
   const n = products.length;
+  const product = products[active];
 
-  const next = useCallback(() => setActive((a) => (a + 1) % n), [n]);
-  const prev = useCallback(() => setActive((a) => (a - 1 + n) % n), [n]);
+  const goTo = useCallback((i: number) => setActive(((i % n) + n) % n), [n]);
+  const next = useCallback(() => goTo(active + 1), [active, goTo]);
+  const prev = useCallback(() => goTo(active - 1), [active, goTo]);
 
-  // Auto-rotate — restarts its window on every manual interaction too, since `active` is a dependency
+  // Drive the full enter -> hold(+orbit) -> exit cycle, then advance to the next cup.
   useEffect(() => {
     if (n < 2) return;
-    const t = setInterval(next, interval);
-    return () => clearInterval(t);
-  }, [n, interval, active, next]);
+    setOrbitOpen(false);
+    const tOrbitIn = setTimeout(() => setOrbitOpen(true), cycleDuration * 0.24);
+    const tOrbitOut = setTimeout(() => setOrbitOpen(false), cycleDuration * 0.74);
+    const tAdvance = setTimeout(next, cycleDuration);
+    return () => {
+      clearTimeout(tOrbitIn);
+      clearTimeout(tOrbitOut);
+      clearTimeout(tAdvance);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, n, cycleDuration]);
 
-  if (n === 0) return null;
-
-  const offsetOf = (i: number) => {
-    let diff = i - active;
-    if (diff > n / 2) diff -= n;
-    if (diff < -n / 2) diff += n;
-    return diff;
-  };
-
-  const active_product = products[active];
+  if (!product) return null;
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/* 3D stage — cups dominate the hero area */}
       <div
         className="relative w-full flex items-center justify-center"
-        style={{ height: 500, perspective: 1300 }}
+        style={{ height: 460, perspective: 1300 }}
       >
         {/* Glass nav arrows */}
         <motion.button
@@ -67,117 +77,100 @@ export default function PremiumMenuCarousel3D({ products, onSelect, interval = 3
           <ChevronRight size={20} />
         </motion.button>
 
-        {products.map((p, i) => {
-          const offset = offsetOf(i);
-          if (Math.abs(offset) > 2) return null;
+        {/* Ambient glow behind the cup, pulses while settled */}
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.75, 0.4] }}
+          transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            width: 260,
+            height: 260,
+            background: `radial-gradient(circle, ${product.color}55 0%, transparent 70%)`,
+            filter: "blur(36px)",
+          }}
+        />
 
-          const isCenter = offset === 0;
-          const style =
-            offset === 0
-              ? { x: 0, scale: 1, opacity: 1, rotateY: 0, zIndex: 5, filter: "brightness(1)" }
-              : Math.abs(offset) === 1
-              ? { x: offset * 330, scale: 0.6, opacity: 0.4, rotateY: offset * -34, zIndex: 3, filter: "brightness(0.55) blur(0.5px)" }
-              : { x: offset * 480, scale: 0.38, opacity: 0, rotateY: offset * -42, zIndex: 1, filter: "brightness(0.35)" };
+        {/* The single cup — enters from the right rotating, holds center, exits left rotating.
+            x + rotateY animate together the whole time, so rotation always happens DURING movement. */}
+        <motion.div
+          key={active}
+          className="relative"
+          style={{ transformStyle: "preserve-3d" }}
+          animate={{
+            x: [260, 0, 0, -260],
+            rotateY: [48, 0, 0, -48],
+            scale: [0.55, 1, 1, 0.55],
+            opacity: [0, 1, 1, 0],
+          }}
+          transition={{ duration: cycleDuration / 1000, times: [0, 0.24, 0.76, 1], ease: [0.4, 0, 0.2, 1] }}
+        >
+          <motion.button
+            onClick={() => onSelect(product)}
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+            className="relative block"
+            aria-label={`View ${product.name}`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={CUP_IMAGE}
+              alt={product.name}
+              style={{ width: 260, height: "auto", filter: "drop-shadow(0 22px 28px rgba(0,0,0,0.5))" }}
+            />
+            {/* Printed name — curved, near the lid where the surface is clean */}
+            <div className="absolute top-[19%] left-1/2 -translate-x-1/2">
+              <CurvedLabel id={`carousel-${product.id}`} text={product.name} width={130} />
+            </div>
+          </motion.button>
 
-          return (
-            <motion.button
-              key={p.id}
-              onClick={() => (isCenter ? onSelect(p) : setActive(i))}
-              animate={style}
-              initial={false}
-              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute"
-              style={{ transformStyle: "preserve-3d", cursor: "pointer" }}
-              aria-label={isCenter ? `View ${p.name}` : `Show ${p.name}`}
-              tabIndex={isCenter ? 0 : -1}
-            >
-              {isCenter && (
-                <motion.div
-                  animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.75, 0.4] }}
-                  transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 -z-10 rounded-full"
-                  style={{
-                    background: `radial-gradient(circle, ${p.color}55 0%, transparent 70%)`,
-                    filter: "blur(36px)",
-                    transform: "scale(2.2)",
-                  }}
-                />
-              )}
-              <motion.div
-                animate={isCenter ? { y: [0, -12, 0] } : {}}
-                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <NamedCoffeeCupSVG productId={p.id} name={p.name} color={p.color} size={isCenter ? 340 : 220} />
-              </motion.div>
-            </motion.button>
-          );
-        })}
+          {/* Orbit info bubbles — emerge from the cup, hold, retract back in */}
+          <AnimatePresence>
+            {orbitOpen &&
+              ORBIT_SLOTS.map((slot) => {
+                const Icon = slot.icon;
+                const raw = slot.key === "flavorNotes" ? product.flavorNotes?.[0] : product[slot.key];
+                const label = (raw as string) || slot.fallback || "—";
+                const rad = (slot.angle * Math.PI) / 180;
+                const radius = 128;
+                const tx = Math.cos(rad) * radius;
+                const ty = Math.sin(rad) * radius * 0.7;
+
+                return (
+                  <motion.div
+                    key={slot.key}
+                    initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
+                    animate={{ x: tx, y: ty, scale: 1, opacity: 1 }}
+                    exit={{ x: 0, y: 0, scale: 0, opacity: 0 }}
+                    transition={{ type: "spring", damping: 16, stiffness: 190, delay: Math.abs(slot.angle) / 900 }}
+                    className="absolute top-1/2 left-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full whitespace-nowrap"
+                    style={{
+                      background: "rgba(20,10,5,0.65)",
+                      border: `1px solid ${product.color}55`,
+                      backdropFilter: "blur(10px)",
+                      marginLeft: -1,
+                      marginTop: -1,
+                    }}
+                  >
+                    <Icon size={12} style={{ color: product.color }} />
+                    <span className="text-white/85 text-[11px] font-medium">{label}</span>
+                  </motion.div>
+                );
+              })}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
-      {/* Active coffee info — glassmorphism card */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active_product.id}
-          initial={{ opacity: 0, y: 20, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 0.97 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="text-center max-w-md mx-4 px-6 py-5 rounded-[1.75rem] -mt-2"
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            backdropFilter: "blur(18px)",
-            boxShadow: `0 20px 50px ${active_product.color}22`,
-          }}
-        >
-          <h2 className="text-white font-bold text-2xl mb-1">{active_product.name}</h2>
-          <div className="flex items-center justify-center gap-2 mb-3 flex-wrap">
-            <span
-              className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
-              style={{ background: `${active_product.color}22`, color: active_product.color }}
-            >
-              {active_product.roastType || "Signature Coffee"}
-            </span>
-            {active_product.roastLevel && (
-              <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full text-white/70" style={{ background: "rgba(255,255,255,0.08)" }}>
-                {active_product.roastLevel}
-              </span>
-            )}
-          </div>
-
-          <p className="text-white/60 text-sm leading-relaxed mb-4">{active_product.description}</p>
-
-          {active_product.flavorNotes && (
-            <div className="flex items-center justify-center gap-2 flex-wrap mb-3">
-              {active_product.flavorNotes.map((note) => (
-                <span
-                  key={note}
-                  className="text-[11px] font-medium px-3 py-1 rounded-full text-white/80"
-                  style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
-                >
-                  {note}
-                </span>
-              ))}
-            </div>
-          )}
-
-          <p className="text-white/40 text-xs">
-            {active_product.prepTime} · <span style={{ color: active_product.color }} className="font-bold">{formatPrice(active_product.price)}</span>
-          </p>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Dots — also clickable for direct navigation */}
-      <div className="flex gap-1.5 mt-5">
+      {/* Dots */}
+      <div className="flex gap-1.5 mt-4">
         {products.map((p, i) => (
           <button
             key={p.id}
-            onClick={() => setActive(i)}
+            onClick={() => goTo(i)}
             aria-label={`Go to ${p.name}`}
             className="h-1.5 rounded-full transition-all duration-300"
             style={{
               width: i === active ? 18 : 6,
-              background: i === active ? active_product.color : "rgba(255,255,255,0.2)",
+              background: i === active ? product.color : "rgba(255,255,255,0.2)",
             }}
           />
         ))}

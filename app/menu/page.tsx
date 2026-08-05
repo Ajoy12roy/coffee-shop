@@ -8,6 +8,7 @@ import { Product } from "@/types";
 import PremiumMenuCarousel3D from "@/components/ui/PremiumMenuCarousel3D";
 import SpecialCard from "@/components/ui/SpecialCard";
 import CoffeeDetailSheet from "@/components/ui/CoffeeDetailSheet";
+import AmbientCoffeeParticles from "@/components/ui/AmbientCoffeeParticles";
 
 const DRINKS = PRODUCTS.filter((p) => p.category === "drinks");
 
@@ -21,6 +22,7 @@ export default function MenuPage() {
     <div className="min-h-screen">
       {/* Full-screen 3D coffee showcase */}
       <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 pt-28 pb-12">
+        <AmbientCoffeeParticles />
         <div
           className="absolute inset-0 -z-10"
           style={{ background: "radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255,107,44,0.12) 0%, transparent 70%)" }}
@@ -35,7 +37,7 @@ export default function MenuPage() {
           <h1 className="text-white font-bold text-4xl mt-1">Pick Your Cup</h1>
         </motion.div>
 
-        <PremiumMenuCarousel3D products={DRINKS} onSelect={setSelected} interval={3000} />
+        <PremiumMenuCarousel3D products={DRINKS} onSelect={setSelected} cycleDuration={3800} />
 
         <motion.div
           initial={{ opacity: 0 }}
